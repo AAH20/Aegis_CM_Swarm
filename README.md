@@ -12,6 +12,19 @@ It is designed to show the shape of an agentic system without shipping offensive
 
 **Demo video:** [Aegis_CM_Swarm1.mp4](Aegis_CM_Swarm1.mp4)
 
+## Read this first
+
+If you only want the short version, here it is:
+
+- `arena/` is the safe demo API that the workers talk to.
+- `red_hive/` and `blue_hive/` are telemetry workers that simulate monitoring behavior.
+- `commander/` is the orchestration brain that reads telemetry and decides what to do next.
+- `core/` contains the raw Vertex AI agent wrapper and the MCP tool declarations.
+- `demo.py` is the local smoke test for the agent wrapper.
+- `scripts/elevenlabs_demo.py` creates the audio file used in the pitch.
+
+If you are in a hurry, run `make up`, then open `http://localhost:8000`.
+
 ## Project goals
 
 This scaffold is built to demonstrate:
@@ -54,6 +67,31 @@ Aegis_CM_Swarm/
 Generated files such as `artifacts/`, local `.env` values, and demo media are intentionally ignored by Git so the repository stays clean.
 
 Built with [a2z-soc.com](https://a2z-soc.com).
+
+## Folder guide
+
+| Path | What it contains | Why it exists |
+| --- | --- | --- |
+| `arena/` | FastAPI app and Dockerfile | Provides the demo target the workers monitor |
+| `red_hive/` | Worker container | Simulates a probe or load-monitoring role |
+| `blue_hive/` | Worker container | Simulates baseline collection and observability |
+| `commander/` | Worker container | Aggregates telemetry and drives the action loop |
+| `core/` | Python agent helpers | Holds raw Vertex AI and MCP tool wiring |
+| `scripts/` | Utility scripts | Contains the ElevenLabs and Vertex smoke test helpers |
+| `demo.py` | Local entrypoint | Runs the agent wrapper without Docker |
+| `docker-compose.yml` | Compose stack | Starts every service with one command |
+| `Makefile` | Shortcut commands | Gives you one-line commands for common tasks |
+| `.env.example` | Template env file | Shows all environment variables in one place |
+
+## How the system fits together
+
+1. `target_arena` starts first and exposes `/health`, `/metrics`, and `/api/data`.
+2. `red_hive` and `blue_hive` poll the arena and print safe telemetry summaries.
+3. `commander` reads the same telemetry, sends it to `AegisSwarmNode`, and interprets the response.
+4. When the CPU threshold is exceeded, `commander` triggers the simulated voice-alert path.
+5. `demo.py` and `scripts/vertex_smoke_test.py` let you test the Vertex wrapper without the full stack.
+
+In plain English: the project demonstrates observe -> analyze -> act, but in a safe, deterministic way.
 
 ## Services
 
