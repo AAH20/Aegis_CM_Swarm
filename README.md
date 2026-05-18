@@ -10,9 +10,11 @@ It is designed to show the shape of an agentic system without shipping offensive
 - a small MCP-style tool declaration module
 - a local demo entrypoint for quick verification
 
-## Project goals
+<video controls width="100%" src="Aegis_CM_Swarm1.mp4">
+	Your browser does not support embedded video playback.
+</video>
 
-Demo video: [Aegis_CM_Swarm1.mp4](Aegis_CM_Swarm1.mp4)
+## Project goals
 
 This scaffold is built to demonstrate:
 
@@ -367,7 +369,9 @@ The current demo flow is intentionally simple:
 
 ## Demo media
 
-Watch the recorded demo video here: [Aegis_CM_Swarm1.mp4](Aegis_CM_Swarm1.mp4)
+<video controls width="100%" src="Aegis_CM_Swarm1.mp4">
+	Your browser does not support embedded video playback.
+</video>
 
 This gives you a full end-to-end narrative for a hackathon demo without requiring any risky behavior.
 
