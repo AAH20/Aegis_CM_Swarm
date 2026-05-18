@@ -28,12 +28,6 @@ Aegis_CM_Swarm/
 │   ├── Dockerfile
 │   ├── main.py
 │   └── requirements.txt
-├── blue_hive/
-│   ├── Dockerfile
-│   ├── app.py
-│   └── requirements.txt
-
-Generated files such as `artifacts/`, local `.env` values, and demo media are intentionally ignored by Git so the repository stays clean.
 ├── commander/
 │   ├── Dockerfile
 │   ├── app.py
@@ -54,6 +48,10 @@ Generated files such as `artifacts/`, local `.env` values, and demo media are in
 │   └── vertex_smoke_test.py
 └── README.md
 ```
+
+Generated files such as `artifacts/`, local `.env` values, and demo media are intentionally ignored by Git so the repository stays clean.
+
+Built with [a2z-soc.com](https://a2z-soc.com).
 
 ## Services
 
@@ -365,6 +363,10 @@ The current demo flow is intentionally simple:
 5. `demo.py` shows how telemetry is passed into the raw Vertex wrapper in offline or online mode.
 6. `scripts/elevenlabs_demo.py` generates a local audio file for the pitch.
 
+## Demo media
+
+Watch the recorded demo video here: [Aegis_CM_Swarm1.mp4](Aegis_CM_Swarm1.mp4)
+
 This gives you a full end-to-end narrative for a hackathon demo without requiring any risky behavior.
 
 ## What the demo does not do
@@ -413,4 +415,5 @@ Common next steps include:
 
 ## License
 
-No license has been added yet. Add one if you plan to share or publish the project.
+This project is licensed under [LICENSE](LICENSE). Any public use, redistribution,
+or substantial deployment must include clear attribution to [a2z-soc.com](https://a2z-soc.com).
