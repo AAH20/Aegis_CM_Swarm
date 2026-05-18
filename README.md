@@ -12,6 +12,8 @@ It is designed to show the shape of an agentic system without shipping offensive
 
 ## Project goals
 
+Demo video: [Aegis_CM_Swarm1.mp4](Aegis_CM_Swarm1.mp4)
+
 This scaffold is built to demonstrate:
 
 - native Vertex AI usage without LangChain wrappers

@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 artifacts/
 *.mp4
+!Aegis_CM_Swarm1.mp4
