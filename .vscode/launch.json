@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Aegis: Debug Offline Demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/demo.py",
+      "console": "integratedTerminal",
+      "env": {
+        "AEGIS_OFFLINE": "1"
+      }
+    },
+    {
+      "name": "Aegis: Debug Online Demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/demo.py",
+      "console": "integratedTerminal",
+      "env": {
+        "AEGIS_OFFLINE": "0",
+        "GOOGLE_CLOUD_PROJECT": "your-gcp-project",
+        "VERTEX_AI_LOCATION": "us-central1"
+      }
+    },
+    {
+      "name": "Aegis: Debug Arena",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "arena.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Aegis: Debug ElevenLabs Demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/elevenlabs_demo.py",
+      "console": "integratedTerminal",
+      "env": {
+        "ELEVENLABS_API_KEY": "your-key",
+        "ELEVENLABS_VOICE_ID": "your-voice-id"
+      }
+    }
+  ]
+}

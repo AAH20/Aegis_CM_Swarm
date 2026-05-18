@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Aegis: Docker Up",
+      "type": "shell",
+      "command": "make",
+      "args": ["up"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Aegis: Docker Down",
+      "type": "shell",
+      "command": "make",
+      "args": ["down"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Aegis: Offline Demo",
+      "type": "shell",
+      "command": "make",
+      "args": ["demo"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Aegis: Online Demo",
+      "type": "shell",
+      "command": "make",
+      "args": ["demo-online"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Aegis: ElevenLabs Demo",
+      "type": "shell",
+      "command": "make",
+      "args": ["elevenlabs"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Aegis: Run Arena",
+      "type": "shell",
+      "command": "make",
+      "args": ["arena"],
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}

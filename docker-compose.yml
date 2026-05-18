@@ -1,0 +1,40 @@
+services:
+  target_arena:
+    build:
+      context: .
+      dockerfile: arena/Dockerfile
+    ports:
+      - "8001:8000"
+
+  blue_hive:
+    build:
+      context: .
+      dockerfile: blue_hive/Dockerfile
+    environment:
+      - TARGET_BASE_URL=http://target_arena:8000
+    depends_on:
+      - target_arena
+
+  red_hive:
+    build:
+      context: .
+      dockerfile: red_hive/Dockerfile
+    environment:
+      - TARGET_BASE_URL=http://target_arena:8000
+    depends_on:
+      - target_arena
+
+  commander:
+    build:
+      context: .
+      dockerfile: commander/Dockerfile
+    environment:
+      - TARGET_BASE_URL=http://target_arena:8000
+      - GOOGLE_CLOUD_PROJECT=aah-devpost-competition
+      - VERTEX_AI_LOCATION=us-central1
+      - COMMANDER_CPU_ALERT_THRESHOLD=80.0
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
+    volumes:
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+    depends_on:
+      - target_arena
