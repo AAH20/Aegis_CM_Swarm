@@ -1,0 +1,18 @@
+{
+  "intent_id": "aegis.identity.remote-access-lateral-movement",
+  "name": "Identity compromise through trusted remote management",
+  "version": "1.0.0",
+  "description": "Detect a suspicious session followed by remote tool persistence and lateral movement.",
+  "mitre_techniques": ["T1078", "T1219", "T1021", "T1550.004"],
+  "evidence_requirements": [
+    {"source": "identity", "event_type": "suspicious_session", "required_fields": ["session_id", "source_ip", "mfa_method"]},
+    {"source": "endpoint", "event_type": "remote_tool_execution", "required_fields": ["process_name", "process_hash", "parent_process"]},
+    {"source": "endpoint", "event_type": "persistence_created", "required_fields": ["mechanism", "principal"]},
+    {"source": "network", "event_type": "lateral_movement", "required_fields": ["source_host", "destination_host", "protocol"]}
+  ],
+  "sequence": ["suspicious_session", "remote_tool_execution", "persistence_created", "lateral_movement"],
+  "window_minutes": 30,
+  "min_confidence": 0.85,
+  "remediation_actions": ["preserve_evidence", "revoke_session", "disable_principal", "isolate_workload"],
+  "protected_services": ["payments-api"]
+}

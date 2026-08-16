@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegis-response-compiler"
+version = "0.1.0"
+description = "Vendor-neutral governed detection and remediation engineering runtime"
+requires-python = ">=3.11"
+license = {text = "LicenseRef-A2Z-Attribution"}
+
+[project.scripts]
+aegis = "aegis.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aegis*"]

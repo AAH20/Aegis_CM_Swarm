@@ -1,4 +1,48 @@
-# Aegis_CM_Swarm
+# Aegis Detection and Remediation Engineering
+
+> Vendor-neutral security intent compiler, evidence engine, and governed remediation planner.
+
+Aegis now contains an executable vertical slice of a vendor-neutral detection and remediation
+engineering control plane. It translates one security intent into SPL, KQL, ES|QL, and Sigma;
+correlates source evidence without allowing an LLM to invent facts; calculates remediation blast
+radius; blocks high-risk actions that threaten critical services; and emits an authenticated
+outcome receipt.
+
+The original Vertex AI swarm remains in this repository as a legacy demonstration. The new
+`aegis/` runtime is deterministic and model-independent: agents may enrich or challenge a case,
+but cannot declare evidence, approve an action, or execute remediation.
+
+## Run the identity-intrusion vertical slice
+
+```bash
+make test
+make identity-demo
+cat artifacts/identity-intrusion-result.json
+```
+
+The scenario connects a suspicious cloud session, trusted remote-management execution, Linux
+persistence, and lateral movement. Its dependency graph deliberately makes the compromised build
+runner part of a payments path: evidence preservation and session revocation require approval,
+while account disabling and workload isolation are blocked until a continuity plan exists.
+
+## Production architecture
+
+- `aegis/models.py`: typed intent, evidence, finding, and action contracts.
+- `aegis/evidence.py`: evidence graph, correlation, contradiction, and abstention.
+- `aegis/compilers.py`: portable SPL, KQL, ES|QL, and Sigma output.
+- `aegis/remediation.py`: reversible action catalog and dependency-aware safety planning.
+- `aegis/receipts.py`: canonical outcome digests and optional HMAC authentication.
+- `aegis/runtime.py`: deterministic orchestration boundary.
+- `schemas/`: public security-intent contract.
+- `examples/identity-intrusion/`: executable initial threat pack.
+- `docs/ARCHITECTURE.md`: trust boundaries and extension path.
+- `docs/THREAT_MODEL.md`: explicit controls and remaining production work.
+
+No production action is executed by this release. That boundary is intentional.
+
+---
+
+## Legacy swarm demonstration
 
 Aegis_CM_Swarm is a safe, Dockerized multi-service demo scaffold for orchestrating a small agent swarm with raw Vertex AI SDK patterns.
 

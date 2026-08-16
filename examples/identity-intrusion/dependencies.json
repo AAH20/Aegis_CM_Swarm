@@ -1,0 +1,4 @@
+{
+  "dependencies": {"payments-api": ["build-runner-01"], "checkout": ["payments-api"]},
+  "critical_services": ["payments-api", "checkout"]
+}

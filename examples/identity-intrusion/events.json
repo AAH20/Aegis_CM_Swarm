@@ -1,0 +1,22 @@
+[
+  {
+    "event_id": "evt-001", "timestamp": "2026-08-16T08:00:00Z", "source": "entra-id",
+    "event_type": "suspicious_session", "actor": "svc-deploy", "target": "build-runner-01",
+    "attributes": {"session_id": "session-a17", "source_ip": "198.51.100.42", "mfa_method": "session-cookie", "risk": "high"}
+  },
+  {
+    "event_id": "evt-002", "timestamp": "2026-08-16T08:04:00Z", "source": "osquery",
+    "event_type": "remote_tool_execution", "actor": "svc-deploy", "target": "build-runner-01",
+    "attributes": {"process_name": "meshagent", "process_hash": "sha256:demo-hash-001", "parent_process": "bash", "signed": false}
+  },
+  {
+    "event_id": "evt-003", "timestamp": "2026-08-16T08:07:00Z", "source": "linux-auditd",
+    "event_type": "persistence_created", "actor": "svc-deploy", "target": "build-runner-01",
+    "attributes": {"mechanism": "systemd-service", "principal": "root", "unit": "meshagent.service"}
+  },
+  {
+    "event_id": "evt-004", "timestamp": "2026-08-16T08:14:00Z", "source": "zeek",
+    "event_type": "lateral_movement", "actor": "build-runner-01", "target": "payments-api",
+    "attributes": {"source_host": "build-runner-01", "destination_host": "payments-api", "protocol": "ssh", "bytes_out": 48122}
+  }
+]

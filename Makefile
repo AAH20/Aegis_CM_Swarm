@@ -1,7 +1,7 @@
-PYTHON ?= python
+PYTHON ?= python3
 DOCKER_COMPOSE ?= docker compose
 
-.PHONY: up down build demo demo-online elevenlabs arena
+.PHONY: up down build demo demo-online elevenlabs arena test identity-demo
 
 up:
 	$(DOCKER_COMPOSE) up --build
@@ -23,3 +23,15 @@ elevenlabs:
 
 arena:
 	$(PYTHON) -m uvicorn arena.main:app --reload --host 0.0.0.0 --port 8000
+
+test:
+	$(PYTHON) -m unittest discover -s tests -v
+
+identity-demo:
+	@mkdir -p artifacts
+	$(PYTHON) -m aegis.cli run \
+		--intent examples/identity-intrusion/intent.json \
+		--events examples/identity-intrusion/events.json \
+		--dependencies examples/identity-intrusion/dependencies.json \
+		--target build-runner-01 \
+		--output artifacts/identity-intrusion-result.json
