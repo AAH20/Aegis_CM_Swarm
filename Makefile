@@ -1,7 +1,7 @@
 PYTHON ?= python3
 DOCKER_COMPOSE ?= docker compose
 
-.PHONY: up down build demo demo-online elevenlabs arena test identity-demo authority-demo
+.PHONY: up down build demo demo-online elevenlabs arena test identity-demo authority-demo effects-demo
 
 up:
 	$(DOCKER_COMPOSE) up --build
@@ -41,3 +41,9 @@ authority-demo:
 	$(PYTHON) -m aegis.cli authority \
 		--topology examples/authority-mesh/gitlab-shadow-path.json \
 		--output artifacts/authority-mesh-result.json
+
+effects-demo:
+	@mkdir -p artifacts
+	$(PYTHON) -m aegis.cli effects \
+		--scenario examples/effect-provenance/denied-gitlab-shadow-effect.json \
+		--output artifacts/effect-provenance-result.json

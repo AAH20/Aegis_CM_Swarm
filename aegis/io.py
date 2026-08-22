@@ -6,6 +6,7 @@ from typing import Any
 
 from .models import DetectionIntent, SecurityEvent, ValidationError
 from .authority import AuthorityTopology
+from .effects import EffectScenario
 
 
 def load_json(path: str | Path) -> Any:
@@ -40,3 +41,10 @@ def load_authority_topology(path: str | Path) -> AuthorityTopology:
     if not isinstance(value, dict):
         raise ValidationError("authority topology must be a JSON object")
     return AuthorityTopology.from_dict(value)
+
+
+def load_effect_scenario(path: str | Path) -> EffectScenario:
+    value = load_json(path)
+    if not isinstance(value, dict):
+        raise ValidationError("effect scenario must be a JSON object")
+    return EffectScenario.from_dict(value)

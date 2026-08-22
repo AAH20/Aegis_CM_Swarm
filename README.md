@@ -17,14 +17,20 @@ measures enforcement coverage, rejects standing credentials and ungoverned paths
 proof-bound decision receipt. Its first scenario converts the direct GitLab execution path from
 `Aegis_CM_Swarm2` into a safe shadow-path conformance test.
 
+The Effect Provenance slice then reconciles those decisions with independently observed resource
+changes. It distinguishes matched actions, shadow-path effects, effects without decisions,
+post-denial effects, argument drift, duplicates, and untrusted agent self-reporting.
+
 ## Run the identity-intrusion vertical slice
 
 ```bash
 make test
 make identity-demo
 make authority-demo
+make effects-demo
 cat artifacts/identity-intrusion-result.json
 cat artifacts/authority-mesh-result.json
+cat artifacts/effect-provenance-result.json
 ```
 
 The scenario connects a suspicious cloud session, trusted remote-management execution, Linux
@@ -40,6 +46,8 @@ while account disabling and workload isolation are blocked until a continuity pl
 - `aegis/remediation.py`: reversible action catalog and dependency-aware safety planning.
 - `aegis/receipts.py`: canonical outcome digests and optional HMAC authentication.
 - `aegis/runtime.py`: deterministic orchestration boundary.
+- `aegis/authority.py`: authority paths, enforcement coverage, and proof-bound decisions.
+- `aegis/effects.py`: external effect normalization and decision/effect reconciliation.
 - `schemas/`: public security-intent contract.
 - `examples/identity-intrusion/`: executable initial threat pack.
 - `docs/ARCHITECTURE.md`: trust boundaries and extension path.

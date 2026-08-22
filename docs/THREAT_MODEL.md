@@ -18,6 +18,8 @@
 - Compromised adapters and dependency confusion.
 - Alternate API or MCP paths that reach the same effect without crossing the policy gate.
 - Standing agent credentials reused outside the approved call envelope.
+- Effects that occur after a denial or without any corresponding decision.
+- Agent-authored telemetry presented as independent proof of execution.
 
 ## Initial controls
 
@@ -29,6 +31,8 @@
 - Original event identifiers remain in every finding.
 - Privileged routes are grouped by equivalent target/effect and partial enforcement is reported.
 - Proof envelopes bind approvals to exact arguments, policy generation, state, expiry, and nonce.
+- Resource-side observations are reconciled with decisions and retain explicit evidence origin.
+- Outcome receipts commit to decision, effect, reconciliation, and observer identities.
 
 ## Not yet production-ready
 

@@ -6,7 +6,8 @@ import os
 from pathlib import Path
 
 from .authority import analyze_authority
-from .io import load_authority_topology, load_events, load_intent, load_json
+from .effects import reconcile_effects
+from .io import load_authority_topology, load_effect_scenario, load_events, load_intent, load_json
 from .remediation import DependencyGraph
 from .runtime import AegisRuntime
 
@@ -24,6 +25,9 @@ def build_parser() -> argparse.ArgumentParser:
     authority = subparsers.add_parser("authority", help="analyze privileged action paths and bind a decision proof")
     authority.add_argument("--topology", required=True)
     authority.add_argument("--output")
+    effects = subparsers.add_parser("effects", help="reconcile external effects with authority decisions")
+    effects.add_argument("--scenario", required=True)
+    effects.add_argument("--output")
     return parser
 
 
@@ -36,6 +40,17 @@ def main(argv: list[str] | None = None) -> int:
             dependencies=DependencyGraph.from_dict(load_json(args.dependencies)),
             backends=tuple(item.strip() for item in args.backends.split(",") if item.strip()),
             target=args.target,
+            signing_key=os.getenv("AEGIS_RECEIPT_KEY"),
+        )
+        rendered = json.dumps(result.to_dict(), indent=2, sort_keys=True)
+        if args.output:
+            Path(args.output).write_text(rendered + "\n", encoding="utf-8")
+        else:
+            print(rendered)
+        return 0
+    if args.command == "effects":
+        result = reconcile_effects(
+            load_effect_scenario(args.scenario),
             signing_key=os.getenv("AEGIS_RECEIPT_KEY"),
         )
         rendered = json.dumps(result.to_dict(), indent=2, sort_keys=True)

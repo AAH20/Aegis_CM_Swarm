@@ -40,3 +40,12 @@ reusable credentials that carry standing privileged authority. A decision proof 
 sponsor, agent, route, operation, target, canonical argument digest, policy generation, resource
 state precondition, expiry, and nonce. The first fixture models the direct GitLab API route from
 `Aegis_CM_Swarm2` alongside a governed MCP adapter. It performs no external side effect.
+
+## Effect provenance vertical slice
+
+The `aegis.effects` module consumes resource-side observations and reconciles them against an
+Authority Mesh decision. Evidence records declare whether they came from an external audit sensor
+or from the agent itself. The reconciler reports effects without decisions, effects after denial,
+shadow-path execution, changed actors, stale state, changed arguments or effects, duplicates, and exact matches. Its outcome
+receipt commits to the authority decision, every observed effect, every reconciliation result, and
+the independent observer identities. Aegis itself still performs no production action.
