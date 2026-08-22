@@ -1,42 +1,69 @@
-# Aegis Detection and Remediation Engineering
+# Aegis Authority Mesh
 
-> Vendor-neutral security intent compiler, evidence engine, and governed remediation planner.
+> Detect when AI agents bypass approval gates and produce privileged effects through shadow MCP,
+> API, database, workload, or child-agent paths.
 
-Aegis now contains an executable vertical slice of a vendor-neutral detection and remediation
-engineering control plane. It translates one security intent into SPL, KQL, ES|QL, and Sigma;
-correlates source evidence without allowing an LLM to invent facts; calculates remediation blast
-radius; blocks high-risk actions that threaten critical services; and emits an authenticated
-outcome receipt.
+Aegis is an executable AI agent security reference architecture for runtime authorization,
+non-human identity, MCP security, workload identity, effect provenance, and governed remediation.
+It separates probabilistic agent reasoning from deterministic evidence, authorization, approval,
+and execution controls.
 
-The original Vertex AI swarm remains in this repository as a legacy demonstration. The new
-`aegis/` runtime is deterministic and model-independent: agents may enrich or challenge a case,
-but cannot declare evidence, approve an action, or execute remediation.
+The central invariant is simple:
 
-The Authority Mesh slice additionally discovers multiple routes to the same privileged effect,
-measures enforcement coverage, rejects standing credentials and ungoverned paths, and emits a
-proof-bound decision receipt. Its first scenario converts the direct GitLab execution path from
-`Aegis_CM_Swarm2` into a safe shadow-path conformance test.
+> Every privileged effect must match a current, exact, independently verifiable authority decision.
 
-The Effect Provenance slice then reconciles those decisions with independently observed resource
-changes. It distinguishes matched actions, shadow-path effects, effects without decisions,
-post-denial effects, argument drift, duplicates, and untrusted agent self-reporting.
+If a denied database write still occurs, an approved call executes through another server, a child
+agent substitutes its identity, arguments change after approval, or the agent reports its own
+success as evidence, Authority Mesh fails closed and records why.
 
-## Run the identity-intrusion vertical slice
+## Why this exists
+
+A policy gateway proves only that calls passing through that gateway were evaluated. It does not
+prove that the gateway was the only route to the resource. A real PostgreSQL reproduction reported
+in [MCP PR #2848](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2848#issuecomment-5175717523)
+showed an agent bypassing a gated MCP server through a second server connected to the same database.
+Five rows were deleted while the approval ledger remained internally consistent because it never
+observed the alternate path.
+
+Authority Mesh models and tests that missing security boundary:
+
+```text
+human sponsor → agent/workload identity → delegated credential → decision
+              → execution path → backend resource → externally observed effect
+```
+
+## Five-minute proof
 
 ```bash
 make test
-make identity-demo
 make authority-demo
 make effects-demo
-cat artifacts/identity-intrusion-result.json
 cat artifacts/authority-mesh-result.json
 cat artifacts/effect-provenance-result.json
 ```
 
-The scenario connects a suspicious cloud session, trusted remote-management execution, Linux
-persistence, and lateral movement. Its dependency graph deliberately makes the compromised build
-runner part of a payments path: evidence preservation and session revocation require approval,
-while account disabling and workload isolation are blocked until a continuity plan exists.
+The safe fixture models a governed GitLab MCP adapter and a direct GitLab API route reaching the
+same effect. Aegis calculates 50% enforcement coverage, denies the direct route, then reconciles a
+resource-side audit event proving the denied effect nevertheless occurred. The result is
+`denied_but_effect_observed` with critical severity. Aegis performs no external action.
+
+## What is implemented
+
+| Control | Executable behavior | Evidence |
+| --- | --- | --- |
+| Evidence integrity | Missing or disconnected evidence causes abstention | [`test_missing_chain_abstains`](tests/test_runtime.py) |
+| Blast-radius control | Critical-service dependencies block unsafe containment | [`test_dependency_blocks_high_risk_action`](tests/test_runtime.py) |
+| Authority-path coverage | Equivalent governed and ungoverned effects are detected | [`test_detects_equivalent_effect_bypass_and_standing_authority`](tests/test_authority.py) |
+| Zero standing privilege | Reusable privileged credentials fail closed | [`test_denies_swarm2_direct_api_path`](tests/test_authority.py) |
+| Exact approval binding | Arguments, actor, target, policy generation, state, expiry, and nonce are committed | [`aegis/authority.py`](aegis/authority.py) |
+| Shadow-path detection | An allowed request executing through another path is critical | [`test_approved_call_through_different_path_is_shadow_effect`](tests/test_effects.py) |
+| Deny/effect reconciliation | A resource effect after denial is critical | [`test_external_effect_after_denial_is_critical`](tests/test_effects.py) |
+| External evidence origin | Agent self-reporting is not accepted as independent proof | [`test_self_reported_effect_is_not_trusted`](tests/test_effects.py) |
+| TOCTOU and identity binding | Changed actor or stale state fails closed | [`test_actor_substitution_and_state_drift_fail_closed`](tests/test_effects.py) |
+| At-most-once semantics | Duplicate effects for one request are critical | [`test_changed_arguments_and_duplicate_effects_fail_closed`](tests/test_effects.py) |
+
+See the complete [upstream proof matrix](docs/PROOF-MATRIX.md) and the
+[AI agent security architecture roadmap](docs/AI-AGENT-SECURITY-ROADMAP.md).
 
 ## Production architecture
 
@@ -52,8 +79,12 @@ while account disabling and workload isolation are blocked until a continuity pl
 - `examples/identity-intrusion/`: executable initial threat pack.
 - `docs/ARCHITECTURE.md`: trust boundaries and extension path.
 - `docs/THREAT_MODEL.md`: explicit controls and remaining production work.
+- `docs/PROOF-MATRIX.md`: raised upstream problems mapped to code and tests.
+- `docs/AI-AGENT-SECURITY-ROADMAP.md`: evidence-driven implementation path.
 
-No production action is executed by this release. That boundary is intentional.
+No production action is executed by this release. That boundary is intentional. The current
+sensor-origin flag and HMAC receipt are reference primitives, not a claim of production-grade
+remote attestation; KMS-backed asymmetric identity and live resource adapters remain roadmap work.
 
 ---
 
