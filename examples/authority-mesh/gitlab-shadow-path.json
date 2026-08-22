@@ -1,0 +1,58 @@
+{
+  "topology_id": "swarm2-gitlab-shadow-path-v1",
+  "credentials": [
+    {
+      "credential_id": "gitlab-static-token",
+      "kind": "personal_access_token",
+      "standing": true,
+      "scope": ["project:82313809:issues:write"]
+    },
+    {
+      "credential_id": "aegis-call-bound-token",
+      "kind": "proof_bound_capability",
+      "standing": false,
+      "scope": ["project:82313809:issues:create"]
+    }
+  ],
+  "paths": [
+    {
+      "path_id": "governed-gitlab-adapter",
+      "agent_id": "spiffe://a2z-soc/agent/purple-commander",
+      "human_sponsor": "urn:a2z-soc:operator:incident-commander",
+      "protocol": "mcp",
+      "endpoint": "mcp://aegis-authority-mesh/gitlab",
+      "operation": "gitlab_create_incident",
+      "target": "gitlab://project/82313809/issues",
+      "effect": "create",
+      "credential_id": "aegis-call-bound-token",
+      "enforcement_points": ["aegis-authority-mesh"]
+    },
+    {
+      "path_id": "swarm2-direct-gitlab-api",
+      "agent_id": "spiffe://a2z-soc/agent/purple-commander",
+      "human_sponsor": "urn:a2z-soc:operator:incident-commander",
+      "protocol": "https",
+      "endpoint": "https://gitlab.com/api/v4/projects/82313809/issues",
+      "operation": "requests.post",
+      "target": "gitlab://project/82313809/issues",
+      "effect": "create",
+      "credential_id": "gitlab-static-token",
+      "enforcement_points": []
+    }
+  ],
+  "request": {
+    "request_id": "req-purple-incident-001",
+    "path_id": "swarm2-direct-gitlab-api",
+    "arguments": {
+      "title": "Suspicious lateral movement",
+      "labels": ["security", "aegis", "auto-generated"],
+      "caldera_profile_digest": "sha256:fixture-profile"
+    },
+    "policy_id": "agent-privileged-effects",
+    "policy_generation": "7",
+    "state_precondition": "gitlab-project-active:82313809",
+    "approved": true,
+    "expires_at": "2026-08-22T20:00:00Z",
+    "nonce": "demo-nonce-001"
+  }
+}

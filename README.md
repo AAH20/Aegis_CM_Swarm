@@ -12,12 +12,19 @@ The original Vertex AI swarm remains in this repository as a legacy demonstratio
 `aegis/` runtime is deterministic and model-independent: agents may enrich or challenge a case,
 but cannot declare evidence, approve an action, or execute remediation.
 
+The Authority Mesh slice additionally discovers multiple routes to the same privileged effect,
+measures enforcement coverage, rejects standing credentials and ungoverned paths, and emits a
+proof-bound decision receipt. Its first scenario converts the direct GitLab execution path from
+`Aegis_CM_Swarm2` into a safe shadow-path conformance test.
+
 ## Run the identity-intrusion vertical slice
 
 ```bash
 make test
 make identity-demo
+make authority-demo
 cat artifacts/identity-intrusion-result.json
+cat artifacts/authority-mesh-result.json
 ```
 
 The scenario connects a suspicious cloud session, trusted remote-management execution, Linux

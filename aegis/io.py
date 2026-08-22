@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from .models import DetectionIntent, SecurityEvent, ValidationError
+from .authority import AuthorityTopology
 
 
 def load_json(path: str | Path) -> Any:
@@ -32,3 +33,10 @@ def load_events(path: str | Path) -> list[SecurityEvent]:
     if len({event.event_id for event in events}) != len(events):
         raise ValidationError("event_id values must be unique")
     return events
+
+
+def load_authority_topology(path: str | Path) -> AuthorityTopology:
+    value = load_json(path)
+    if not isinstance(value, dict):
+        raise ValidationError("authority topology must be a JSON object")
+    return AuthorityTopology.from_dict(value)

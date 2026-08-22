@@ -1,7 +1,7 @@
 PYTHON ?= python3
 DOCKER_COMPOSE ?= docker compose
 
-.PHONY: up down build demo demo-online elevenlabs arena test identity-demo
+.PHONY: up down build demo demo-online elevenlabs arena test identity-demo authority-demo
 
 up:
 	$(DOCKER_COMPOSE) up --build
@@ -35,3 +35,9 @@ identity-demo:
 		--dependencies examples/identity-intrusion/dependencies.json \
 		--target build-runner-01 \
 		--output artifacts/identity-intrusion-result.json
+
+authority-demo:
+	@mkdir -p artifacts
+	$(PYTHON) -m aegis.cli authority \
+		--topology examples/authority-mesh/gitlab-shadow-path.json \
+		--output artifacts/authority-mesh-result.json

@@ -31,3 +31,12 @@ blocks high-risk containment when the target supports a critical service.
 - EvidenceForge replay and adversarial mutation.
 - Signed detection-as-code pull requests and canary promotion.
 - Federated, privacy-preserving outcome benchmarks.
+
+## Authority Mesh vertical slice
+
+The `aegis.authority` module adds an execution-independent authority graph. It groups routes by
+target and effect, measures enforcement coverage, detects equivalent-effect bypasses, and flags
+reusable credentials that carry standing privileged authority. A decision proof binds the human
+sponsor, agent, route, operation, target, canonical argument digest, policy generation, resource
+state precondition, expiry, and nonce. The first fixture models the direct GitLab API route from
+`Aegis_CM_Swarm2` alongside a governed MCP adapter. It performs no external side effect.
